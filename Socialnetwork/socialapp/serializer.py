@@ -16,6 +16,7 @@ class Userserializer(serializers.ModelSerializer):
 
 class UserProfileserializer(serializers.ModelSerializer):
     user=Userserializer(read_only=True)
+    # fetch_following = serializers.CharField(read_only=True)
     class Meta:
         model=UserProfile
         fields="__all__"

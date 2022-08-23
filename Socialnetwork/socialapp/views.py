@@ -29,6 +29,23 @@ class UserProfileView(ModelViewSet):
         else:
             return Response(data=serializer.errors)
 
+    @action(methods=["post"], detail=True)
+    def add_follow(self,request,*args,**kwargs):
+        id = kwargs.get("pk")
+        user_to_follow = User.objects.get(id=id)
+        profile=UserProfile.objects.get(user=request.user)
+        profile.following.add(user_to_follow)
+        return Response({"msg": "ok"})
+
+    @action(methods=["get"], detail=False)
+    def my_followings(self,request,*args,**kwargs):
+        user=request.user
+        user_profile=UserProfile.objects.get(user=user)
+        followings=user_profile.following.all()
+        serializer=Userserializer(followings,many=True)
+        return Response(data=serializer.data)
+
+
 class PostsView(ModelViewSet):
     serializer_class = PostSerializer
     queryset = Posts.objects.all()

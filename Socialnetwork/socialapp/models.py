@@ -9,6 +9,11 @@ class UserProfile(models.Model):
     gender=models.CharField(max_length=20)
     bio=models.CharField(max_length=120)
     cover_pic=models.ImageField(upload_to="coverpics",null=True)
+    following=models.ManyToManyField(User,null=True,related_name="following")
+
+    # def fetch_following(self):
+    #     return self.following
+
 class Posts(models.Model):
     author=models.ForeignKey(User,on_delete=models.CASCADE,related_name="post")
     title=models.CharField(max_length=200)
